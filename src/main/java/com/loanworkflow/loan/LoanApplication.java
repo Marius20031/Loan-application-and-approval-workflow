@@ -14,6 +14,7 @@ public class LoanApplication {
     private final Clock clock;
     private LoanStatus status = LoanStatus.SUBMITTED;
     private final List<StatusChange> history = new ArrayList<>();
+    private final List<StatusListener> listeners = new ArrayList<>();
 
     public LoanApplication(Clock clock) {
         this.clock = clock;
@@ -31,11 +32,19 @@ public class LoanApplication {
         return Collections.unmodifiableList(history);
     }
 
+    // Observers are told about every change (audit, notifications, ...)
+    public void addListener(StatusListener listener) {
+        listeners.add(listener);
+    }
+
     public void moveTo(LoanStatus next) {
         if (!status.canMoveTo(next)) {
             throw new InvalidTransitionException(status, next);
         }
-        history.add(new StatusChange(status, next, clock.instant()));
+        StatusChange change = new StatusChange(status, next, clock.instant());
+        history.add(change);
         status = next;
+        // notify only after the state is updated, so listeners see the new status
+        listeners.forEach(l -> l.onStatusChange(change));
     }
 }
