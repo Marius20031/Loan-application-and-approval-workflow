@@ -15,6 +15,7 @@ Early stage. Java 21 + Spring Boot . Currently only a minimal `POST /login` endp
 ## Planned structure
 - `src/main/java` - Spring Boot backend (API and business logic)
 - `src/test/java` - automated tests
+- `frontend/` - Angular web client (see `frontend/README.md`)
 - `docs/` - requirements, mockups, architecture diagrams, tech stack, changelog
 
 ## Team
