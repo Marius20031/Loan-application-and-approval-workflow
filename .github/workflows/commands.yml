@@ -4,10 +4,15 @@ on:
   issue_comment:
     types: [created]
 
+# Only the owner and collaborators may use the commands
+# (author_association is OWNER, MEMBER or COLLABORATOR for them).
 jobs:
-  # /lgtm only leaves a comment, it does not merge
+  # /lgtm only leaves a comment, it does not merge. Text after it is fine ("/lgtm 👍").
   lgtm:
-    if: github.event.issue.pull_request && github.event.comment.body == '/lgtm'
+    if: >-
+      github.event.issue.pull_request
+      && startsWith(github.event.comment.body, '/lgtm')
+      && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -20,15 +25,18 @@ jobs:
         COMMENTER: ${{ github.event.comment.user.login }}
       run: gh pr comment "$PR" --repo "$REPO" --body "Looks good to me, per @$COMMENTER. Use /apprv to merge."
 
-  # /apprv merges the PR, but never for the PR author
+  # /apprv merges the PR, but never for the PR author and never while it is on hold
   apprv:
-    if: github.event.issue.pull_request && github.event.comment.body == '/apprv'
+    if: >-
+      github.event.issue.pull_request
+      && github.event.comment.body == '/apprv'
+      && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     steps:
-    - name: Merge if commenter is not the PR author
+    - name: Merge if allowed
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PR: ${{ github.event.issue.number }}
@@ -39,4 +47,57 @@ jobs:
         if [ "$COMMENTER" = "$AUTHOR" ]; then
           echo "Authors cannot approve their own PR"; exit 1
         fi
+        if gh pr view "$PR" --repo "$REPO" --json labels -q '.labels[].name' | grep -qx hold; then
+          gh pr comment "$PR" --repo "$REPO" --body "This PR is on hold. Use /unhold first."
+          exit 1
+        fi
         gh pr merge "$PR" --repo "$REPO" --squash
+
+  # /hold puts the PR on hold: adds the "hold" label and fails the "hold" status check
+  hold:
+    if: >-
+      github.event.issue.pull_request
+      && startsWith(github.event.comment.body, '/hold')
+      && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      statuses: write
+    steps:
+    - name: Put on hold
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        COMMENTER: ${{ github.event.comment.user.login }}
+      run: |
+        gh label create hold --repo "$REPO" --color D93F0B --description "Do not merge" --force
+        gh pr edit "$PR" --repo "$REPO" --add-label hold
+        SHA=$(gh pr view "$PR" --repo "$REPO" --json headRefOid -q .headRefOid)
+        gh api "repos/$REPO/statuses/$SHA" -f state=failure -f context=hold -f description="On hold"
+        gh pr comment "$PR" --repo "$REPO" --body "On hold, per @$COMMENTER. Use /unhold to release."
+
+  # /unhold removes the label and makes the "hold" status check pass again
+  unhold:
+    if: >-
+      github.event.issue.pull_request
+      && startsWith(github.event.comment.body, '/unhold')
+      && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      statuses: write
+    steps:
+    - name: Release the hold
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        COMMENTER: ${{ github.event.comment.user.login }}
+      run: |
+        gh pr edit "$PR" --repo "$REPO" --remove-label hold
+        SHA=$(gh pr view "$PR" --repo "$REPO" --json headRefOid -q .headRefOid)
+        gh api "repos/$REPO/statuses/$SHA" -f state=success -f context=hold -f description="Not on hold"
+        gh pr comment "$PR" --repo "$REPO" --body "Hold released, per @$COMMENTER."
