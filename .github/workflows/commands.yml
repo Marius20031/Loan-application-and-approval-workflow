@@ -1,0 +1,42 @@
+name: PR commands
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  # /lgtm only leaves a comment, it does not merge
+  lgtm:
+    if: github.event.issue.pull_request && github.event.comment.body == '/lgtm'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+    - name: Reply
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        COMMENTER: ${{ github.event.comment.user.login }}
+      run: gh pr comment "$PR" --repo "$REPO" --body "Looks good to me, per @$COMMENTER. Use /apprv to merge."
+
+  # /apprv merges the PR, but never for the PR author
+  apprv:
+    if: github.event.issue.pull_request && github.event.comment.body == '/apprv'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - name: Merge if commenter is not the PR author
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR: ${{ github.event.issue.number }}
+        REPO: ${{ github.repository }}
+        COMMENTER: ${{ github.event.comment.user.login }}
+        AUTHOR: ${{ github.event.issue.user.login }}
+      run: |
+        if [ "$COMMENTER" = "$AUTHOR" ]; then
+          echo "Authors cannot approve their own PR"; exit 1
+        fi
+        gh pr merge "$PR" --repo "$REPO" --squash
