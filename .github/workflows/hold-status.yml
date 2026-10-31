@@ -1,0 +1,28 @@
+name: Hold status
+
+# Keeps the "hold" status check present on every PR, including after new pushes.
+# Make "hold" a required status check on main so a held PR cannot be merged.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  hold-status:
+    runs-on: ubuntu-latest
+    permissions:
+      statuses: write
+      pull-requests: read
+    steps:
+    - name: Set the hold status
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PR: ${{ github.event.pull_request.number }}
+        SHA: ${{ github.event.pull_request.head.sha }}
+        REPO: ${{ github.repository }}
+      run: |
+        if gh pr view "$PR" --repo "$REPO" --json labels -q '.labels[].name' | grep -qx hold; then
+          STATE=failure; DESC="On hold"
+        else
+          STATE=success; DESC="Not on hold"
+        fi
+        gh api "repos/$REPO/statuses/$SHA" -f state=$STATE -f context=hold -f description="$DESC"
