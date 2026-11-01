@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles. Material colors come from src/material-theme.scss. */
+:root {
+  --brand-navy: #143057; /* primary palette, tone 20 */
+  --brand-gold: #f6bd5d; /* tertiary palette, tone 80 */
+  --brand-serif: 'DM Serif Display', Georgia, serif;
+
+  /* Filled buttons use the deep brand navy instead of the lighter tone 40 */
+  --mat-button-filled-container-color: var(--brand-navy);
+}

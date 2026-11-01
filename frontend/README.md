@@ -13,6 +13,8 @@ Start the backend first (`cd backend && mvn spring-boot:run`). In development,
 calls to `/api/*` are forwarded to the backend on `localhost:8080` (see `proxy.conf.json`),
 so the browser never makes a cross-origin request.
 
+Demo login: `alice` / `password123`.
+
 ## Build and test
 
 ```bash
