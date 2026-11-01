@@ -20,7 +20,9 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
+        cache-dependency-path: backend/pom.xml
 
     # Compiles the code and runs all tests
     - name: Build and test
+      working-directory: backend
       run: mvn -B verify
