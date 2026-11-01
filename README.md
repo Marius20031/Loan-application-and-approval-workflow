@@ -34,4 +34,4 @@ mvn test
 - `docs/` - requirements, mockups, architecture diagrams, tech stack, changelog
 
 ## Team
-To be filled in (students and assigned roles).
+Ciochina Marius, Savu Bogdan, Croitoriu Cosmin Mircea
