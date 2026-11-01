@@ -7,7 +7,7 @@
    - backend: `cd backend && mvn test`
    - frontend: `cd frontend && npm test`
 4. Open a pull request into `main` and link the issue it closes (`Closes #12`).
-5. Wait for the CI check (`Java CI with Maven`) to pass.
+5. Wait for the CI checks to pass: `Java CI with Maven`, and `Frontend CI` when the frontend changed.
 
 ## Review
 Comment on the pull request with:
