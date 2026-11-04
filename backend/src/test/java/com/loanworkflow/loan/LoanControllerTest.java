@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(LoanController.class)
-@Import(InMemoryLoanRepository.class)
+@Import({InMemoryLoanRepository.class, PatternsLoanEngine.class, ApiExceptionHandler.class})
 class LoanControllerTest {
 
     @Autowired

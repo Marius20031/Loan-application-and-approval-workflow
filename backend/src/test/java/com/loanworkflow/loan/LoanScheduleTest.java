@@ -9,7 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 
 @WebMvcTest(LoanController.class)
-@Import({InMemoryLoanRepository.class, ApiExceptionHandler.class})
+@Import({InMemoryLoanRepository.class, PatternsLoanEngine.class, ApiExceptionHandler.class})
 class LoanScheduleTest extends LoanApiTestBase {
 
     // Loans over 10,000 need two different approvers, so both sign here

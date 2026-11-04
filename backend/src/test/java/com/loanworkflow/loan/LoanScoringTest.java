@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 
 @WebMvcTest(LoanController.class)
-@Import({InMemoryLoanRepository.class, ApiExceptionHandler.class})
+@Import({InMemoryLoanRepository.class, PatternsLoanEngine.class, ApiExceptionHandler.class})
 class LoanScoringTest extends LoanApiTestBase {
 
     private String loanWithDocumentsChecked() throws Exception {
