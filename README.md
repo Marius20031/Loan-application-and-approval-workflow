@@ -23,6 +23,9 @@ Java 21 + Spring Boot (Maven), in `backend/`.
 - **Four-eyes approval**: loans up to 10,000 need 1 approval, larger loans need 2 different approvers. Only approvers can approve, never the applicant, never twice.
 - **LoanService**: one entry point that runs the flow: check documents, score (HIGH risk is rejected), approve, disburse, get the repayment schedule.
 
+## Variants
+The loan logic has two implementations behind the same endpoints. `loan.variant=patterns` is the default; `loan.variant=naive` runs the one in `backend/.../naive`. The same HTTP tests run on both. Next: compare them with at least 10,000 simulated users.
+
 ## Run and test
 ```
 cd backend
