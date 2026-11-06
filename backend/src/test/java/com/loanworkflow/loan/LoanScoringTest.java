@@ -4,12 +4,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 
-@WebMvcTest(LoanController.class)
-@Import({InMemoryLoanRepository.class, PatternsLoanEngine.class, ApiExceptionHandler.class})
-class LoanScoringTest extends LoanApiTestBase {
+abstract class LoanScoringTest extends LoanApiTestBase {
 
     private String loanWithDocumentsChecked() throws Exception {
         String loan = createLoan("5000");

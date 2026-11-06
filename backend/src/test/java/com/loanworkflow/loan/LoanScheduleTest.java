@@ -5,12 +5,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
 
-@WebMvcTest(LoanController.class)
-@Import({InMemoryLoanRepository.class, PatternsLoanEngine.class, ApiExceptionHandler.class})
-class LoanScheduleTest extends LoanApiTestBase {
+abstract class LoanScheduleTest extends LoanApiTestBase {
 
     // Loans over 10,000 need two different approvers, so both sign here
     private String approvedLoan(String amount) throws Exception {
