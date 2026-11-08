@@ -24,7 +24,7 @@ Java 21 + Spring Boot (Maven), in `backend/`.
 - **LoanService**: one entry point that runs the flow: check documents, score (HIGH risk is rejected), approve, disburse, get the repayment schedule.
 
 ## Variants
-The loan logic has two implementations behind the same endpoints. `loan.variant=patterns` is the default; `loan.variant=naive` runs the one in `backend/.../naive`. The same HTTP tests run on both. Next: compare them with at least 10,000 simulated users.
+The loan logic has two implementations behind the same endpoints. `loan.variant=patterns` is the default; `loan.variant=naive` runs the one in `backend/.../naive`. The same HTTP tests run on both. What we compare and how: [COMPARISON.md](COMPARISON.md).
 
 ## Run and test
 ```
