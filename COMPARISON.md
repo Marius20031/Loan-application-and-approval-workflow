@@ -4,6 +4,8 @@ We implement the same loan flow twice and compare the two implementations on mai
 
 ## The two implementations
 
+> The second implementation is in a separate pull request (`feature/naive-variant`) and is not on `main` yet.
+
 Both sit behind the `LoanEngine` interface and answer the same endpoints. `loan.variant=patterns` (default) or `loan.variant=naive` picks one.
 
 | | patterns | naive |
