@@ -38,6 +38,9 @@ mvn test
   mvn spring-boot:run -Dspring-boot.run.profiles=prod
   ```
 
+## Comparison
+What we compare and how: [COMPARISON.md](COMPARISON.md).
+
 ## Structure
 - `backend/` - Spring Boot backend (API and business logic)
 - `frontend/` - Angular web client (see `frontend/README.md`)
