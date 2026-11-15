@@ -26,13 +26,52 @@ public class LoanService {
     private final ApprovalRequest approval;
     private final BigDecimal amount;
     private final ScoringStrategy scoring;
+    private final Clock clock;
+    private String id;
     private ScoreResult scoreResult;
 
-    public LoanService(User applicant, BigDecimal amount, ScoringStrategy scoring, Clock clock) {
-        this.loan = new LoanApplication(clock);
-        this.approval = new ApprovalRequest(applicant, amount);
+    public LoanService(
+            LoanApplication loan,
+            ApprovalRequest approval,
+            BigDecimal amount,
+            ScoringStrategy scoring,
+            Clock clock
+    ) {
+        this.loan = loan;
+        this.approval = approval;
         this.amount = amount;
         this.scoring = scoring;
+        this.clock = clock;
+    }
+
+    public LoanService(User applicant, BigDecimal amount, ScoringStrategy scoring, Clock clock) {
+        this(
+                new LoanApplication(clock),
+                new ApprovalRequest(applicant, amount),
+                amount,
+                scoring,
+                clock
+        );
+    }
+
+    public String id() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Clock clock() {
+        return clock;
+    }
+
+    public User applicant() {
+        return approval.applicant();
+    }
+
+    public ApprovalRequest approval() {
+        return approval;
     }
 
     public LoanApplication loan() {
