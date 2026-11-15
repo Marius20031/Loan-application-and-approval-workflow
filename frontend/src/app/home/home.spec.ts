@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AuthService } from '../auth/auth-service';
 import { Home } from './home';
 
@@ -7,7 +8,7 @@ describe('Home', () => {
   it('greets the user and lists the five workflow steps', async () => {
     await TestBed.configureTestingModule({
       imports: [Home],
-      providers: [{ provide: AuthService, useValue: { currentUser: signal('alice') } }],
+      providers: [provideRouter([]), { provide: AuthService, useValue: { currentUser: signal('alice') } }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(Home);

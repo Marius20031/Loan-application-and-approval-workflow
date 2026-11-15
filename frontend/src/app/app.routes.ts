@@ -11,7 +11,13 @@ export const routes: Routes = [
     path: '',
     component: Shell,
     canActivate: [authGuard],
-    children: [{ path: '', loadComponent: () => import('./home/home').then((m) => m.Home) }],
+    children: [
+      { path: '', loadComponent: () => import('./home/home').then((m) => m.Home) },
+      {
+        path: 'loans/new',
+        loadComponent: () => import('./loans/new-loan/new-loan').then((m) => m.NewLoan),
+      },
+    ],
   },
   { path: '**', redirectTo: '' },
 ];
