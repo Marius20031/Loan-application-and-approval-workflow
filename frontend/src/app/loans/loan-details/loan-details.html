@@ -1,0 +1,53 @@
+<a mat-button class="back" routerLink="/">
+  <mat-icon>arrow_back</mat-icon>
+  Home
+</a>
+
+@if (loan.isLoading() && !loan.hasValue()) {
+  <p class="muted">Loading the loan...</p>
+} @else if (loan.error()) {
+  <p class="error" role="alert">
+    <mat-icon>error</mat-icon>
+    Could not load the loan. Please try again.
+  </p>
+} @else if (loan.value(); as current) {
+  <header class="head">
+    <div>
+      <span class="label">Loan amount</span>
+      <h1>{{ current.amount | number: '1.0-2' }}</h1>
+      <p class="reference">Reference {{ current.id }}</p>
+    </div>
+    <span class="status" [attr.data-status]="current.status">{{ statusLabels[current.status] }}</span>
+  </header>
+
+  @if (current.status === 'REJECTED') {
+    <p class="rejected" role="status">
+      <mat-icon>block</mat-icon>
+      This loan was rejected. No further steps are possible.
+    </p>
+  } @else {
+    <ol class="steps">
+      @for (step of steps; track step; let i = $index) {
+        <li [class]="stepState(i, current.status)">
+          <span class="dot">
+            @if (stepState(i, current.status) === 'done') {
+              <mat-icon>check</mat-icon>
+            } @else {
+              {{ i + 1 }}
+            }
+          </span>
+          {{ step }}
+        </li>
+      }
+    </ol>
+  }
+} @else {
+  <div class="not-found">
+    <h1>Loan not found</h1>
+    <p class="muted">
+      No loan has the reference <span class="reference">{{ id() }}</span>. Loans are kept in memory,
+      so they disappear when the backend restarts.
+    </p>
+    <a mat-flat-button routerLink="/loans/new">New application</a>
+  </div>
+}
