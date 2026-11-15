@@ -56,6 +56,7 @@ describe('NewLoan', () => {
     expect(create).toHaveBeenCalledWith('alice', 25000);
     expect(page().querySelector('.reference')?.textContent).toContain('abc-123');
     expect(page().querySelector('.status')?.textContent).toContain('Submitted');
+    expect(page().querySelector<HTMLAnchorElement>('a.view')?.getAttribute('href')).toBe('/loans/abc-123');
   });
 
   it('shows the error sent by the backend', async () => {

@@ -82,6 +82,11 @@ form {
   font-weight: 500;
 }
 
+.done-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
 .reference {
   font-family: ui-monospace, monospace;
   font-size: 0.85rem;

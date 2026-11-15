@@ -1,0 +1,148 @@
+.back {
+  margin: -0.5rem 0 1rem -0.75rem;
+}
+
+.muted {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+h1 {
+  margin: 0.25rem 0 0;
+  font-family: var(--brand-serif);
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: var(--brand-navy);
+}
+
+.reference {
+  margin: 0.25rem 0 0;
+  font-family: ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+  word-break: break-all;
+}
+
+.status {
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-weight: 500;
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.status[data-status='APPROVED'],
+.status[data-status='DISBURSED'],
+.status[data-status='REPAYING'],
+.status[data-status='CLOSED'] {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.status[data-status='REJECTED'] {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+/* Progress through the workflow, with a line between the steps */
+.steps {
+  display: flex;
+  margin: 2.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.steps li::before {
+  content: '';
+  position: absolute;
+  top: 15px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: var(--mat-sys-outline-variant);
+}
+
+.steps li:first-child::before {
+  display: none;
+}
+
+.steps li.done::before {
+  background: var(--brand-navy);
+}
+
+.steps li.done,
+.steps li.next {
+  color: var(--mat-sys-on-surface);
+  font-weight: 500;
+}
+
+.dot {
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--mat-sys-outline-variant);
+  border-radius: 50%;
+  background: var(--mat-sys-surface);
+}
+
+.done .dot {
+  border-color: var(--brand-navy);
+  background: var(--brand-navy);
+  color: #fff;
+}
+
+.done .dot mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.next .dot {
+  border-color: var(--brand-gold);
+  color: var(--brand-navy);
+}
+
+.rejected,
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  padding: 0.9rem 1rem;
+  border-radius: 8px;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.not-found h1 {
+  font-size: 2rem;
+}

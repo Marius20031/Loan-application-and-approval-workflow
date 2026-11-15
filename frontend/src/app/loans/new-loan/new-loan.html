@@ -17,10 +17,16 @@
           <dd><span class="status">{{ statusLabels[loan.status] }}</span></dd>
         </dl>
 
-        <button mat-stroked-button type="button" (click)="startOver()">
-          <mat-icon>add</mat-icon>
-          New application
-        </button>
+        <div class="done-actions">
+          <button mat-stroked-button type="button" (click)="startOver()">
+            <mat-icon>add</mat-icon>
+            New application
+          </button>
+          <a mat-flat-button class="view" [routerLink]="['/loans', loan.id]">
+            View loan
+            <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+          </a>
+        </div>
       </div>
     } @else {
       <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
