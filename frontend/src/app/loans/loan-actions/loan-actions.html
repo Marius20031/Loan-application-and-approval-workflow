@@ -1,0 +1,105 @@
+<mat-card appearance="outlined" class="card">
+  <mat-card-content>
+    @if (scoreResult(); as result) {
+      <div class="score" [attr.data-risk]="result.risk">
+        <span class="score-value">{{ result.score }}</span>
+        <span class="score-label">Credit score<br />from 300 to 850</span>
+        <span class="risk">{{ result.risk }} risk</span>
+      </div>
+    }
+
+    @switch (loan().status) {
+      @case ('SUBMITTED') {
+        <h2>Document check</h2>
+        <p class="muted">An officer confirms that the applicant's documents are complete.</p>
+        <button mat-flat-button type="button" [disabled]="busy()" (click)="checkDocuments()">
+          <mat-icon>fact_check</mat-icon>
+          Mark documents as complete
+        </button>
+      }
+      @case ('DOCUMENTS_CHECKED') {
+        <h2>Credit scoring</h2>
+        <p class="muted">Monthly figures of the applicant. A high risk score rejects the loan.</p>
+        <form class="grid" [formGroup]="scoreForm" (ngSubmit)="score()" novalidate>
+          <mat-form-field appearance="outline">
+            <mat-label>Monthly income</mat-label>
+            <input matInput type="number" min="1" formControlName="monthlyIncome" />
+            <mat-error>Enter an income greater than 0.</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Monthly debt</mat-label>
+            <input matInput type="number" min="0" formControlName="monthlyDebt" />
+            <mat-error>Enter 0 or more.</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Years employed</mat-label>
+            <input matInput type="number" min="0" formControlName="yearsEmployed" />
+            <mat-error>Enter 0 or more.</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Missed payments</mat-label>
+            <input matInput type="number" min="0" formControlName="missedPayments" />
+            <mat-error>Enter 0 or more.</mat-error>
+          </mat-form-field>
+          <button mat-flat-button type="submit" [disabled]="busy()">
+            <mat-icon>insights</mat-icon>
+            Calculate score
+          </button>
+        </form>
+      }
+      @case ('SCORED') {
+        <h2>Approval</h2>
+        <p class="muted">
+          Loans above 10,000 need two different approvers. The applicant cannot approve their own
+          loan.
+        </p>
+        @if (needsSecondApprover()) {
+          <p class="info" role="status">
+            <mat-icon>group</mat-icon>
+            First approval recorded. A second, different approver must also approve.
+          </p>
+        }
+        <form
+          class="row"
+          #approveDirective="ngForm"
+          [formGroup]="approveForm"
+          (ngSubmit)="approve(approveDirective)"
+          novalidate
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Approver</mat-label>
+            <input matInput formControlName="approver" />
+            <mat-error>Approver is required.</mat-error>
+          </mat-form-field>
+          <button mat-flat-button type="submit" [disabled]="busy()">
+            <mat-icon>verified_user</mat-icon>
+            Approve
+          </button>
+        </form>
+      }
+      @case ('APPROVED') {
+        <h2>Disbursement</h2>
+        <p class="muted">Pay out the money. The repayment period starts right away.</p>
+        <button mat-flat-button type="button" [disabled]="busy()" (click)="disburse()">
+          <mat-icon>payments</mat-icon>
+          Disburse loan
+        </button>
+      }
+      @case ('REJECTED') {
+        <h2>No further steps</h2>
+        <p class="muted">A rejected loan cannot continue. The applicant can submit a new application.</p>
+      }
+      @default {
+        <h2>Repayment in progress</h2>
+        <p class="muted">The money was paid out and the repayment period has started.</p>
+      }
+    }
+
+    @if (error(); as message) {
+      <p class="error" role="alert">
+        <mat-icon>error</mat-icon>
+        {{ message }}
+      </p>
+    }
+  </mat-card-content>
+</mat-card>

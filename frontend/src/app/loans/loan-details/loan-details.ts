@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { catchError, of, throwError } from 'rxjs';
+import { LoanActions } from '../loan-actions/loan-actions';
 import { LoanService, LoanStatus, STATUS_LABELS } from '../loan-service';
 
 const STEPS = ['Submitted', 'Documents checked', 'Scored', 'Approved', 'Disbursed'];
@@ -22,9 +23,9 @@ const REACHED: Record<LoanStatus, number> = {
   REJECTED: -1,
 };
 
-/** One loan: amount, status and progress through the workflow. */
+/** One loan: amount, status, progress through the workflow and the next action. */
 @Component({
-  imports: [DecimalPipe, RouterLink, MatButtonModule, MatIconModule],
+  imports: [DecimalPipe, RouterLink, MatButtonModule, MatIconModule, LoanActions],
   selector: 'app-loan-details',
   styleUrl: './loan-details.css',
   templateUrl: './loan-details.html',
