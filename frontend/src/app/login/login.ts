@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { AuthService } from '../auth/auth-service';
 
@@ -24,6 +25,7 @@ import { AuthService } from '../auth/auth-service';
 })
 export class Login {
   private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
   protected readonly form = inject(NonNullableFormBuilder).group({
     username: ['', Validators.required],
@@ -31,7 +33,6 @@ export class Login {
   });
   protected readonly loading = signal(false);
   protected readonly error = signal<string | null>(null);
-  protected readonly loggedInAs = signal<string | null>(null);
   protected readonly hidePassword = signal(true);
 
   protected submit(): void {
@@ -46,7 +47,7 @@ export class Login {
       .login(username, password)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
-        next: () => this.loggedInAs.set(username),
+        next: () => this.router.navigateByUrl('/'),
         error: (e: HttpErrorResponse) =>
           this.error.set(
             e.status === 401

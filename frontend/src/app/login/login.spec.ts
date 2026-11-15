@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Router, provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { AuthService } from '../auth/auth-service';
 import { Login } from './login';
@@ -12,7 +13,7 @@ describe('Login', () => {
     login.mockReset();
     await TestBed.configureTestingModule({
       imports: [Login],
-      providers: [{ provide: AuthService, useValue: { login } }],
+      providers: [provideRouter([]), { provide: AuthService, useValue: { login } }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Login);
@@ -38,13 +39,14 @@ describe('Login', () => {
     expect(page().querySelectorAll('mat-error').length).toBe(2);
   });
 
-  it('greets the user after a successful login', async () => {
+  it('goes to the home page after a successful login', async () => {
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
     login.mockReturnValue(of({ message: 'user connected' }));
 
     await submit('alice', 'password123');
 
     expect(login).toHaveBeenCalledWith('alice', 'password123');
-    expect(page().querySelector('.success')?.textContent).toContain('Welcome, alice');
+    expect(navigate).toHaveBeenCalledWith('/');
   });
 
   it('shows an error for wrong credentials', async () => {

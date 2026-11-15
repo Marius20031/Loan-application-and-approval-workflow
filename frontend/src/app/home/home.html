@@ -1,0 +1,13 @@
+<h1>Hello, {{ user() }}</h1>
+<p class="lead">Apply for a loan and follow it from submission to repayment.</p>
+
+<h2>How it works</h2>
+<ol class="steps">
+  @for (step of steps; track step.title; let i = $index) {
+    <li>
+      <span class="number">{{ i + 1 }}</span>
+      <strong>{{ step.title }}</strong>
+      <span class="text">{{ step.text }}</span>
+    </li>
+  }
+</ol>

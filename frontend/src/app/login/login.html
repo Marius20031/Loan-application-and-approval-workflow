@@ -32,51 +32,44 @@
       <h2>Welcome back</h2>
       <p class="subtitle">Sign in to continue to your loans.</p>
 
-      @if (loggedInAs(); as user) {
-        <p class="success" role="status">
-          <mat-icon>check_circle</mat-icon>
-          Welcome, {{ user }}! You are signed in.
-        </p>
-      } @else {
-        <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-          <mat-form-field appearance="outline">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" autocomplete="username" />
-            <mat-error>Username is required.</mat-error>
-          </mat-form-field>
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          <mat-error>Username is required.</mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              [type]="hidePassword() ? 'password' : 'text'"
-              formControlName="password"
-              autocomplete="current-password"
-            />
-            <button
-              mat-icon-button
-              matSuffix
-              type="button"
-              (click)="hidePassword.set(!hidePassword())"
-              [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
-            >
-              <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
-            </button>
-            <mat-error>Password is required.</mat-error>
-          </mat-form-field>
-
-          @if (error(); as message) {
-            <p class="error" role="alert">
-              <mat-icon>error</mat-icon>
-              {{ message }}
-            </p>
-          }
-
-          <button mat-flat-button type="submit" [disabled]="loading()">
-            {{ loading() ? 'Signing in...' : 'Sign in' }}
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
           </button>
-        </form>
-      }
+          <mat-error>Password is required.</mat-error>
+        </mat-form-field>
+
+        @if (error(); as message) {
+          <p class="error" role="alert">
+            <mat-icon>error</mat-icon>
+            {{ message }}
+          </p>
+        }
+
+        <button mat-flat-button type="submit" [disabled]="loading()">
+          {{ loading() ? 'Signing in...' : 'Sign in' }}
+        </button>
+      </form>
     </div>
   </section>
 </div>
