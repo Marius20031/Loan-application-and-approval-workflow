@@ -41,4 +41,23 @@ describe('AuthService', () => {
 
     expect(status).toBe(401);
   });
+
+  it('remembers the user only after a successful login', () => {
+    service.login('alice', 'wrong').subscribe({ error: () => undefined });
+    http.expectOne('/api/login').flush({}, { status: 401, statusText: 'Unauthorized' });
+    expect(service.currentUser()).toBeNull();
+
+    service.login('alice', 'password123').subscribe();
+    http.expectOne('/api/login').flush({ message: 'user connected' });
+    expect(service.currentUser()).toBe('alice');
+  });
+
+  it('forgets the user on logout', () => {
+    service.login('alice', 'password123').subscribe();
+    http.expectOne('/api/login').flush({ message: 'user connected' });
+
+    service.logout();
+
+    expect(service.currentUser()).toBeNull();
+  });
 });

@@ -1,0 +1,21 @@
+<mat-toolbar class="topbar">
+  <a class="logo" routerLink="/">
+    <mat-icon>account_balance</mat-icon>
+    <span>Loan Workflow</span>
+  </a>
+
+  <span class="spacer"></span>
+
+  <span class="user">
+    <mat-icon>person</mat-icon>
+    {{ user() }}
+  </span>
+  <button mat-button class="sign-out" type="button" (click)="signOut()">
+    <mat-icon>logout</mat-icon>
+    Sign out
+  </button>
+</mat-toolbar>
+
+<main class="content">
+  <router-outlet />
+</main>
