@@ -67,6 +67,12 @@ public class DocumentEntity {
         this.status = DocumentStatus.PENDING;
     }
 
+    public DocumentEntity(DocumentType documentType, String fileName, DocumentStatus status, Instant expiryDate) {
+        this(documentType, fileName);
+        this.status = status != null ? status : DocumentStatus.PENDING;
+        this.expiryDate = expiryDate;
+    }
+
     @PrePersist
     public void prePersist() {
         if (id == null) {

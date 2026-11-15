@@ -1,6 +1,7 @@
 package com.loanworkflow.approval;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,6 +26,14 @@ public class ApprovalRequest {
         this.amount = amount;
     }
 
+    public User applicant() {
+        return applicant;
+    }
+
+    public BigDecimal amount() {
+        return amount;
+    }
+
     public int requiredApprovals() {
         return amount.compareTo(FOUR_EYES_THRESHOLD) > 0 ? 2 : 1;
     }
@@ -46,6 +55,16 @@ public class ApprovalRequest {
 
     public int approvals() {
         return approvedBy.size();
+    }
+
+    public Set<String> approvedBy() {
+        return Collections.unmodifiableSet(approvedBy);
+    }
+
+    public void restoreApprover(String approverName) {
+        if (approverName != null && !approverName.isBlank()) {
+            approvedBy.add(approverName);
+        }
     }
 
     public boolean isFullyApproved() {

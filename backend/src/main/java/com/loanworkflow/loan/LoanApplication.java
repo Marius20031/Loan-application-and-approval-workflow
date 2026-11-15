@@ -16,12 +16,28 @@ public class LoanApplication {
     private final List<StatusChange> history = new ArrayList<>();
     private final List<StatusListener> listeners = new ArrayList<>();
 
-    public LoanApplication(Clock clock) {
+    public LoanApplication(Clock clock, LoanStatus initialStatus, List<StatusChange> initialHistory) {
         this.clock = clock;
+        this.status = initialStatus != null ? initialStatus : LoanStatus.SUBMITTED;
+        if (initialHistory != null) {
+            this.history.addAll(initialHistory);
+        }
+    }
+
+    public LoanApplication(Clock clock, LoanStatus initialStatus) {
+        this(clock, initialStatus, Collections.emptyList());
+    }
+
+    public LoanApplication(Clock clock) {
+        this(clock, LoanStatus.SUBMITTED, Collections.emptyList());
     }
 
     public LoanApplication() {
         this(Clock.systemUTC());
+    }
+
+    public Clock clock() {
+        return clock;
     }
 
     public LoanStatus status() {
@@ -30,6 +46,12 @@ public class LoanApplication {
 
     public List<StatusChange> history() {
         return Collections.unmodifiableList(history);
+    }
+
+    public void restoreStatusChange(StatusChange change) {
+        if (change != null) {
+            history.add(change);
+        }
     }
 
     // Observers are told about every change (audit, notifications, ...)
