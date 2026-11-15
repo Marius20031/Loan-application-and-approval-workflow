@@ -41,6 +41,8 @@
       }
     </ol>
   }
+
+  <app-loan-actions [loan]="current" (changed)="loan.set($event)" />
 } @else {
   <div class="not-found">
     <h1>Loan not found</h1>

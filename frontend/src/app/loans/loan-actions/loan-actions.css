@@ -1,0 +1,106 @@
+.card {
+  padding: 1rem 0.5rem 0.5rem;
+}
+
+h2 {
+  margin: 0;
+  font-family: var(--brand-serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--brand-navy);
+}
+
+.muted {
+  margin: 0.4rem 0 1.25rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.25rem 1rem;
+}
+
+.grid button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.row mat-form-field {
+  flex: 1;
+}
+
+.row button {
+  height: 56px;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  background: var(--mat-sys-surface-container);
+}
+
+.score-value {
+  font-family: var(--brand-serif);
+  font-size: 2.6rem;
+  line-height: 1;
+  color: var(--brand-navy);
+}
+
+.score-label {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.risk {
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+[data-risk='LOW'] .risk {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+[data-risk='MEDIUM'] .risk {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+[data-risk='HIGH'] .risk {
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
+
+.info,
+.error {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+
+.info {
+  background: var(--mat-sys-tertiary-container);
+  color: var(--mat-sys-on-tertiary-container);
+}
+
+.error {
+  margin: 1rem 0 0;
+  background: var(--mat-sys-error-container);
+  color: var(--mat-sys-on-error-container);
+}
