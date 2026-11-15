@@ -1,0 +1,56 @@
+<h1>New loan application</h1>
+<p class="lead">The application is saved as Submitted. An officer then checks the documents.</p>
+
+<mat-card appearance="outlined" class="card">
+  <mat-card-content>
+    @if (created(); as loan) {
+      <div class="done" role="status">
+        <mat-icon class="done-icon">check_circle</mat-icon>
+        <h2>Application submitted</h2>
+
+        <dl class="summary">
+          <dt>Reference</dt>
+          <dd class="reference">{{ loan.id }}</dd>
+          <dt>Amount</dt>
+          <dd>{{ loan.amount | number: '1.0-2' }}</dd>
+          <dt>Status</dt>
+          <dd><span class="status">{{ statusLabels[loan.status] }}</span></dd>
+        </dl>
+
+        <button mat-stroked-button type="button" (click)="startOver()">
+          <mat-icon>add</mat-icon>
+          New application
+        </button>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <mat-form-field appearance="outline">
+          <mat-label>Applicant</mat-label>
+          <input matInput formControlName="applicant" autocomplete="name" />
+          <mat-error>Applicant is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input matInput type="number" min="1" formControlName="amount" />
+          <mat-hint>Loans above 10,000 need two different approvers.</mat-hint>
+          <mat-error>Enter an amount greater than 0.</mat-error>
+        </mat-form-field>
+
+        @if (error(); as message) {
+          <p class="error" role="alert">
+            <mat-icon>error</mat-icon>
+            {{ message }}
+          </p>
+        }
+
+        <div class="actions">
+          <a mat-button routerLink="/">Cancel</a>
+          <button mat-flat-button type="submit" [disabled]="saving()">
+            {{ saving() ? 'Submitting...' : 'Submit application' }}
+          </button>
+        </div>
+      </form>
+    }
+  </mat-card-content>
+</mat-card>

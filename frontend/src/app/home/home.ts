@@ -1,8 +1,12 @@
 import { Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../auth/auth-service';
 
 /** First page after sign-in: a greeting and how a loan moves through the workflow. */
 @Component({
+  imports: [RouterLink, MatButtonModule, MatIconModule],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',
