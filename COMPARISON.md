@@ -43,6 +43,16 @@ Cyclomatic complexity (`backend/measure/results-complexity.md`):
 
 Per method, naive is higher. The total is higher for patterns, because the same logic is split over more methods and files. Both go in the report.
 
+Database performance and concurrency (`backend/measure/results-database-performance.md`):
+
+| Metric | Measured Value | Target SLA | Status |
+|---|---|---|---|
+| Concurrency (50 parallel loans) | 50/50 persisted, 0 collisions | 100% thread-safe | PASS |
+| Approver Contention (uk_loan_approver) | 1 success, 9 rejected | Prevent duplicate sign-offs | PASS |
+| Save Latency (mean / median) | ~1.50 ms / ~1.10 ms | < 50 ms | PASS |
+| Query Latency (mean / median) | ~0.35 ms / ~0.25 ms | < 25 ms | PASS |
+| Batch Throughput (`saveAll`) | > 400 loans/sec | > 50 loans/sec | PASS |
+
 ## Rules
 
 - Same inputs, same rules and the same tests for both.
